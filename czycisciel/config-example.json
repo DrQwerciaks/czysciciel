@@ -1,0 +1,84 @@
+{
+    "_comment": "Przykładowa konfiguracja Czysciciela Dysku",
+    
+    "cleaning_enabled": true,
+    "scan_interval_hours": 1,
+    "days_old": 7,
+    "large_file_mb": 200,
+    
+    "directories_to_clean": [
+        "/var/log",
+        "/tmp",
+        "/var/tmp",
+        "/var/cache/apt/archives",
+        "/home/*/.cache/thumbnails",
+        "/home/*/.local/share/Trash"
+    ],
+    
+    "directories_to_scan": [
+        "/var/log",
+        "/tmp",
+        "/var/tmp", 
+        "/var/cache",
+        "/home",
+        "/usr/share",
+        "/opt",
+        "/var/lib/dpkg",
+        "/var/lib/apt"
+    ],
+    
+    "notifications_enabled": true,
+    
+    "preserve_files": [
+        "*.conf",
+        "*.cfg",
+        "*.config",
+        "*.json",
+        "*.xml",
+        "*.yml",
+        "*.yaml",
+        "*.ini",
+        "*.desktop",
+        "*.service",
+        "*.socket",
+        "*.timer",
+        "authorized_keys",
+        "known_hosts",
+        "id_*",
+        "*.key",
+        "*.pem",
+        "*.crt",
+        "*.cert"
+    ],
+    
+    "advanced_settings": {
+        "max_file_age_days": 30,
+        "critical_space_threshold_gb": 1,
+        "emergency_cleanup_enabled": true,
+        "backup_before_delete": false,
+        "parallel_processing": true,
+        "max_threads": 4,
+        "exclude_patterns": [
+            "*.running",
+            "*.lock",
+            "*.pid",
+            "*/proc/*",
+            "*/sys/*",
+            "*/dev/*"
+        ]
+    },
+    
+    "notification_settings": {
+        "min_cleaned_mb_for_notification": 10,
+        "notification_sound": true,
+        "notification_urgency": "normal",
+        "notification_timeout": 5000
+    },
+    
+    "logging": {
+        "log_level": "INFO",
+        "max_log_files": 10,
+        "max_log_size_mb": 50,
+        "compress_old_logs": true
+    }
+}

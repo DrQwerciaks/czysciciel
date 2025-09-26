@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="diskGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2196F3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cleanGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFC107;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF9800;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="128" cy="128" r="120" fill="url(#diskGradient)" stroke="#333" stroke-width="4"/>
+  
+  <!-- Disk segments (like pie chart) -->
+  <path d="M 128 128 L 128 8 A 120 120 0 0 1 208 68 Z" fill="#4CAF50" opacity="0.8"/>
+  <path d="M 128 128 L 208 68 A 120 120 0 0 1 208 188 Z" fill="#2196F3" opacity="0.8"/>
+  <path d="M 128 128 L 208 188 A 120 120 0 0 1 48 188 Z" fill="#9C27B0" opacity="0.8"/>
+  <path d="M 128 128 L 48 188 A 120 120 0 0 1 128 8 Z" fill="#FF5722" opacity="0.8"/>
+  
+  <!-- Center hole (like CD) -->
+  <circle cx="128" cy="128" r="40" fill="#fff" stroke="#333" stroke-width="2"/>
+  
+  <!-- Cleaning brush/broom icon in center -->
+  <g transform="translate(128, 128)">
+    <!-- Broom handle -->
+    <rect x="-2" y="-25" width="4" height="35" fill="#8D6E63" rx="2"/>
+    <!-- Broom bristles -->
+    <path d="M -12 5 L -8 15 L -4 10 L 0 15 L 4 10 L 8 15 L 12 5 L 8 0 L -8 0 Z" 
+          fill="url(#cleanGradient)"/>
+    <!-- Sparkle effects -->
+    <g fill="#FFD700" opacity="0.8">
+      <polygon points="-20,-10 -18,-8 -20,-6 -22,-8" transform="rotate(45)"/>
+      <polygon points="15,-15 17,-13 15,-11 13,-13" transform="rotate(-30)"/>
+      <polygon points="-15,20 -13,22 -15,24 -17,22" transform="rotate(60)"/>
+      <polygon points="20,10 22,12 20,14 18,12" transform="rotate(-60)"/>
+    </g>
+  </g>
+  
+  <!-- App name at bottom -->
+  <text x="128" y="240" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="18" font-weight="bold" fill="#333">INV CLEANER</text>
+</svg>

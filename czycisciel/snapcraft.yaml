@@ -1,0 +1,117 @@
+name: inv-cleaner
+base: core22
+version: '1.0.0'
+summary: Advanced disk cleaner and monitoring tool for Linux
+description: |
+  Inv Cleaner is a powerful disk cleaning and monitoring application for Linux systems.
+  It provides visual disk usage analysis similar to Baobab and automatic cleanup features.
+  
+  Features:
+  - Visual disk usage analysis with pie charts
+  - Automatic cleanup of old log files (>7 days)
+  - Removal of large temporary files (>200MB)
+  - Background daemon with hourly cleanup
+  - System notifications for cleaned files
+  - Detailed logging of all operations
+  - Modern GUI interface
+  - Real-time monitoring
+
+grade: stable
+confinement: classic
+
+icon: assets/inv-cleaner-logo.png
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+apps:
+  inv-cleaner:
+    command: bin/inv-cleaner-gui
+    desktop: usr/share/applications/inv-cleaner.desktop
+    extensions: [gnome]
+    environment:
+      PYTHONPATH: $SNAP/lib/python3.10/site-packages:$PYTHONPATH
+      HOME: $SNAP_USER_DATA
+    plugs:
+      - home
+      - desktop
+      - desktop-legacy
+      - network
+    
+  inv-cleaner-daemon:
+    command: bin/inv-cleaner-daemon
+    daemon: simple
+    restart-condition: always
+    environment:
+      PYTHONPATH: $SNAP/lib/python3.10/site-packages:$PYTHONPATH
+    plugs:
+      - system-files
+      - network
+      - log-observe
+
+parts:
+  inv-cleaner:
+    plugin: python
+    source: .
+    requirements:
+      - requirements.txt
+    stage-packages:
+      - python3-tk
+      - libnotify-bin
+      - python3-matplotlib
+      - python3-numpy
+    override-build: |
+      craftctl default
+      
+      # Create bin directory
+      mkdir -p $CRAFTCTL_PART_INSTALL/bin
+      
+      # Copy main scripts with wrappers
+      cp user-wrapper.py $CRAFTCTL_PART_INSTALL/bin/inv-cleaner-gui
+      cp daemon-wrapper.py $CRAFTCTL_PART_INSTALL/bin/inv-cleaner-daemon
+      cp main.py $CRAFTCTL_PART_INSTALL/bin/inv-cleaner-main
+      cp daemon.py $CRAFTCTL_PART_INSTALL/bin/inv-cleaner-daemon-core
+      cp test.py $CRAFTCTL_PART_INSTALL/bin/inv-cleaner-test
+      
+      # Make executable
+      chmod +x $CRAFTCTL_PART_INSTALL/bin/*
+      
+      # Create desktop entry directory
+      mkdir -p $CRAFTCTL_PART_INSTALL/usr/share/applications
+      mkdir -p $CRAFTCTL_PART_INSTALL/usr/share/icons/hicolor/256x256/apps
+      
+      # Copy desktop file
+      cp assets/inv-cleaner.desktop $CRAFTCTL_PART_INSTALL/usr/share/applications/
+      
+      # Copy icon
+      cp assets/inv-cleaner-logo.png $CRAFTCTL_PART_INSTALL/usr/share/icons/hicolor/256x256/apps/
+      
+      # Create config directory structure
+      mkdir -p $CRAFTCTL_PART_INSTALL/etc/inv-cleaner
+      cp config-example.json $CRAFTCTL_PART_INSTALL/etc/inv-cleaner/
+      
+      # Create systemd service template
+      mkdir -p $CRAFTCTL_PART_INSTALL/lib/systemd/system
+      cp assets/inv-cleaner.service $CRAFTCTL_PART_INSTALL/lib/systemd/system/
+
+plugs:
+  desktop:
+  desktop-legacy:
+  home:
+  network:
+  removable-media:
+  system-files:
+    read:
+    - /var/log
+    - /tmp
+    - /var/tmp
+    - /var/cache
+    write:
+    - /var/log
+    - /tmp
+    - /var/tmp
+  process-control:
+  hardware-observe:
+  mount-observe:
+  system-observe:

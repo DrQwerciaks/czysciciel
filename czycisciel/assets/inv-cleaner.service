@@ -1,0 +1,16 @@
+[Unit]
+Description=Inv Cleaner - Automatic Disk Cleaning Daemon
+After=multi-user.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/snap/inv-cleaner/current/bin/inv-cleaner-daemon
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

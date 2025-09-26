@@ -1,0 +1,13 @@
+# Logo placeholder - replace with actual PNG file
+# This is a text file representing a 256x256 PNG logo
+# In actual deployment, this should be replaced with a proper PNG image
+#
+# Logo concept:
+# - Circular design with pie chart segments (representing disk analysis)
+# - Central cleaning brush/broom icon
+# - Blue/Green gradient colors for modern look
+# - "INV CLEANER" text at bottom
+#
+# Generate PNG version using:
+# convert inv-cleaner-logo.svg -resize 256x256 inv-cleaner-logo.png
+# or use online SVG to PNG converter

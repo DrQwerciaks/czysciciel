@@ -1,0 +1,28 @@
+[Desktop Entry]
+Version=1.0
+Name=Inv Cleaner
+Comment=Advanced disk cleaner and monitoring tool
+Comment[pl]=Zaawansowane narzędzie do czyszczenia i monitorowania dysku
+Exec=inv-cleaner
+Icon=inv-cleaner-logo
+Terminal=false
+Type=Application
+Categories=System;Utility;
+Keywords=disk;cleaner;monitor;system;cleanup;storage;
+Keywords[pl]=dysk;czyszczenie;monitor;system;sprzątanie;
+StartupNotify=true
+MimeType=
+Actions=daemon;test;
+
+[Desktop Action daemon]
+Name=Start Background Daemon
+Name[pl]=Uruchom Daemon w Tle
+Exec=inv-cleaner-daemon
+Icon=inv-cleaner-logo
+
+[Desktop Action test]
+Name=Run Tests
+Name[pl]=Uruchom Testy
+Exec=inv-cleaner-test
+Icon=inv-cleaner-logo
+Terminal=true

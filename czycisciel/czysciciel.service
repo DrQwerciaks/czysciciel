@@ -1,0 +1,16 @@
+[Unit]
+Description=Czysciciel Dysku - Automatic Disk Cleaner
+After=multi-user.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python3 /opt/czysciciel/daemon.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
