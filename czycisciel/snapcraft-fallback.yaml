@@ -29,15 +29,19 @@ apps:
   inv-cleaner:
     command: bin/inv-cleaner-gui
     desktop: usr/share/applications/inv-cleaner.desktop
-    extensions: [gnome]
     environment:
       PYTHONPATH: $SNAP/lib/python3.10/site-packages:$PYTHONPATH
+      DISPLAY: $DISPLAY
+      WAYLAND_DISPLAY: $WAYLAND_DISPLAY
     plugs:
       - home
       - desktop
       - desktop-legacy
       - network
       - removable-media
+      - x11
+      - wayland
+      - unity7
     
   inv-cleaner-daemon:
     command: bin/inv-cleaner-daemon
@@ -61,6 +65,14 @@ parts:
       - libnotify-bin
       - python3-matplotlib
       - python3-numpy
+      - python3-pil
+      - python3-pil.imagetk
+      - libgtk-3-0
+      - libgdk-pixbuf2.0-0
+      - libcairo2
+      - libpango-1.0-0
+      - libpangocairo-1.0-0
+      - libatk1.0-0
     override-build: |
       craftctl default
       
@@ -90,6 +102,7 @@ parts:
       # Create config directory structure
       mkdir -p $CRAFTCTL_PART_INSTALL/etc/inv-cleaner
       cp config-example.json $CRAFTCTL_PART_INSTALL/etc/inv-cleaner/
+      cp translations.json $CRAFTCTL_PART_INSTALL/etc/inv-cleaner/
       
       # Create systemd service template
       mkdir -p $CRAFTCTL_PART_INSTALL/lib/systemd/system
@@ -102,6 +115,9 @@ plugs:
   network:
   removable-media:
   log-observe:
+  x11:
+  wayland:
+  unity7:
   system-files:
     read:
       - /var/log
@@ -117,8 +133,3 @@ plugs:
       - /tmp
       - /var/tmp
       - /var/cache/apt/archives
-    - /var/tmp
-  process-control:
-  hardware-observe:
-  mount-observe:
-  system-observe:

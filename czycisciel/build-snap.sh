@@ -27,7 +27,36 @@ if [[ ! -f "snapcraft.yaml" ]]; then
 fi
 
 echo "🏗️  Rozpoczynam budowanie snapa..."
-snapcraft
+
+# Najpierw spróbuj z głównym snapcraft.yaml
+echo "📄 Próbuję z głównym snapcraft.yaml..."
+if snapcraft 2>/dev/null; then
+    echo "✅ Budowanie z głównym snapcraft.yaml zakończone sukcesem!"
+else
+    echo "⚠️  Główny snapcraft.yaml nie zadziałał, próbuję z fallback..."
+    
+    # Spróbuj z fallback
+    if [[ -f "snapcraft-fallback.yaml" ]]; then
+        echo "📄 Używam snapcraft-fallback.yaml..."
+        cp snapcraft.yaml snapcraft.yaml.bak
+        cp snapcraft-fallback.yaml snapcraft.yaml
+        
+        if snapcraft; then
+            echo "✅ Budowanie z fallback snapcraft.yaml zakończone sukcesem!"
+        else
+            echo "❌ Również fallback nie zadziałał"
+            # Przywróć oryginalny plik
+            mv snapcraft.yaml.bak snapcraft.yaml
+            exit 1
+        fi
+        
+        # Przywróć oryginalny plik
+        mv snapcraft.yaml.bak snapcraft.yaml
+    else
+        echo "❌ Brak pliku fallback"
+        exit 1
+    fi
+fi
 
 # Znajdź zbudowany plik snap
 SNAP_FILE=$(ls *.snap 2>/dev/null | head -n 1)

@@ -51,8 +51,38 @@ uninstall:
 snap: clean
 	@echo "📦 Building snap package..."
 	@which snapcraft >/dev/null || (echo "❌ snapcraft not found. Install with: sudo snap install snapcraft --classic" && exit 1)
-	snapcraft
+	@echo "🔧 Trying main snapcraft.yaml..."
+	@if snapcraft 2>/dev/null; then \
+		echo "✅ Main snapcraft.yaml worked!"; \
+	else \
+		echo "⚠️  Main failed, trying fallback..."; \
+		if [ -f snapcraft-fallback.yaml ]; then \
+			cp snapcraft.yaml snapcraft.yaml.bak; \
+			cp snapcraft-fallback.yaml snapcraft.yaml; \
+			snapcraft; \
+			mv snapcraft.yaml.bak snapcraft.yaml; \
+			echo "✅ Fallback snapcraft.yaml worked!"; \
+		else \
+			echo "❌ No fallback available"; \
+			exit 1; \
+		fi; \
+	fi
 	@echo "✅ Snap package built: $(APP_NAME)_$(VERSION)_amd64.snap"
+
+# Build snap with fallback
+snap-fallback: clean
+	@echo "📦 Building snap package with fallback config..."
+	@which snapcraft >/dev/null || (echo "❌ snapcraft not found. Install with: sudo snap install snapcraft --classic" && exit 1)
+	@if [ -f snapcraft-fallback.yaml ]; then \
+		cp snapcraft.yaml snapcraft.yaml.bak; \
+		cp snapcraft-fallback.yaml snapcraft.yaml; \
+		snapcraft; \
+		mv snapcraft.yaml.bak snapcraft.yaml; \
+		echo "✅ Snap package built with fallback config"; \
+	else \
+		echo "❌ snapcraft-fallback.yaml not found"; \
+		exit 1; \
+	fi
 
 # Install snap package locally
 snap-install: snap
